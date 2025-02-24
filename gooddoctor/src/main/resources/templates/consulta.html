@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt">
+<head>
+    <title>Marcar Consulta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+</head>
+    <body class="bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-lg mx-auto mt-10 bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+            <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white">Marque sua Consulta</h2>
+
+            <!-- Seleção do Médico -->
+            <div class="mt-4">
+                <label class="block text-gray-700 dark:text-gray-300">Escolha o Médico</label>
+                <select id="medico" class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white">
+                    <option value="dr.joao">Dr. João Silva</option>
+                    <option value="dr.maria">Dra. Maria Fernandes</option>
+                    <option value="dr.pedro">Dr. Pedro Souza</option>
+                </select>
+            </div>
+
+            <!-- Data da Consulta -->
+            <div class="mt-4">
+                <label class="block text-gray-700 dark:text-gray-300">Data da Consulta</label>
+                <input type="date" id="dataConsulta" class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white">
+            </div>
+
+            <!-- Horário da Consulta -->
+            <div class="mt-4">
+                <label class="block text-gray-700 dark:text-gray-300">Horário</label>
+                <select id="horarioConsulta" class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white">
+                    <option value="08:00">08:00</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                </select>
+            </div>
+
+            <!-- Motivo da Consulta -->
+            <div class="mt-4">
+                <label class="block text-gray-700 dark:text-gray-300">Motivo da Consulta</label>
+                <textarea id="motivo" rows="3" class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Descreva seu motivo..."></textarea>
+            </div>
+
+            <!-- Botão de Envio -->
+            <div class="mt-6">
+                <button onclick="marcarConsulta()" class="w-full px-4 py-2 text-white bg-primary-600 hover:bg-primary-700 rounded-md focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800">
+                    Agendar Consulta
+                </button>
+            </div>
+
+            <!-- Alerta de Sucesso -->
+            <div id="alertaSucesso" class="hidden mt-4 p-4 bg-green-500 text-white rounded-md">
+                Consulta marcada com sucesso!
+            </div>
+
+            <!-- Alerta de Erro -->
+            <div id="alertaErro" class="hidden mt-4 p-4 bg-red-500 text-white rounded-md">
+                Ocorreu um erro ao marcar a consulta. Tente novamente.
+            </div>
+        </div>
+
+        <script>
+            function marcarConsulta() {
+                // Simulação de envio da consulta (normalmente seria uma requisição AJAX ao backend)
+                document.getElementById("alertaSucesso").classList.remove("hidden");
+
+                // Esconder alerta após 3 segundos
+                setTimeout(() => {
+                    document.getElementById("alertaSucesso").classList.add("hidden");
+                }, 3000);
+            }
+        </script>
+    </body>
+</html>
