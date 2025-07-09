@@ -94,7 +94,7 @@ export function NavUser({
   
   const handleLogout = () => {
     logout()
-    router.push("/routes/auth/login")
+    router.push("/auth/login")
   }
 
   const handleNotificationsViewed = () => {
@@ -152,7 +152,7 @@ export function NavUser({
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => router.push("/routes/dashboard/account")}>
+                <DropdownMenuItem onClick={() => router.push("/dashboard/account")}>
                   <BadgeCheck className="mr-2 h-4 w-4" />
                   <span>Account</span>
                 </DropdownMenuItem>

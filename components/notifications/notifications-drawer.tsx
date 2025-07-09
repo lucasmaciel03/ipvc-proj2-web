@@ -41,7 +41,7 @@ const mockNotifications: Notification[] = [
     date: new Date(2025, 4, 6, 9, 30), // 6 de maio de 2025
     type: "success",
     read: false,
-    link: "/routes/dashboard/consultas/historico"
+    link: "/dashboard/consultas/historico"
   },
   {
     id: "2",
@@ -50,7 +50,7 @@ const mockNotifications: Notification[] = [
     date: new Date(2025, 4, 4, 14, 15), // 4 de maio de 2025
     type: "info",
     read: false,
-    link: "/routes/dashboard/exames"
+    link: "/dashboard/exames"
   },
   {
     id: "3",
@@ -59,7 +59,7 @@ const mockNotifications: Notification[] = [
     date: new Date(2025, 4, 3, 10, 0), // 3 de maio de 2025
     type: "info",
     read: true,
-    link: "/routes/dashboard/consultas/historico"
+    link: "/dashboard/consultas/historico"
   },
   {
     id: "4",
@@ -76,7 +76,7 @@ const mockNotifications: Notification[] = [
     date: new Date(2025, 3, 28, 11, 20), // 28 de abril de 2025
     type: "success",
     read: true,
-    link: "/routes/dashboard/exames"
+    link: "/dashboard/exames"
   },
   {
     id: "6",
@@ -85,7 +85,7 @@ const mockNotifications: Notification[] = [
     date: new Date(2025, 3, 25, 9, 0), // 25 de abril de 2025
     type: "warning",
     read: true,
-    link: "/routes/dashboard/consultas/historico"
+    link: "/dashboard/consultas/historico"
   }
 ]
 

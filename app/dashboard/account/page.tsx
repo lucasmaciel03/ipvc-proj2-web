@@ -40,7 +40,7 @@ export default function AccountPage() {
       // que não estamos apenas esperando o hook useAuth carregar
       const timer = setTimeout(() => {
         if (!user) {
-          router.push("/routes/auth/login");
+          router.push("/auth/login");
         }
       }, 1000);
       

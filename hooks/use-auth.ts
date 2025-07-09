@@ -1,76 +1,324 @@
 "use client";
 
-import { User } from "@/mocks/auth";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { APP_CONFIG } from '@/constants/app';
 
-// Função para persistir o usuário no localStorage
-const saveUserToStorage = (user: User | null) => {
-  if (typeof window !== 'undefined') {
-    if (user) {
-      localStorage.setItem('auth_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('auth_user');
-    }
-  }
+/**
+ * Enhanced User interface with comprehensive typing
+ * Follows Clean Code principle: Strong typing
+ */
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  role: 'patient' | 'doctor' | 'admin';
+  avatar?: string;
+  address?: string;
+  birthDate?: string;
+  emergencyContact?: string;
+  bloodType?: string;
+  allergies?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Authentication state interface
+ */
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  isInitialized: boolean;
+  error: string | null;
+}
+
+/**
+ * Authentication errors enum for better error handling
+ */
+export enum AuthError {
+  INVALID_CREDENTIALS = 'invalid_credentials',
+  NETWORK_ERROR = 'network_error',
+  TOKEN_EXPIRED = 'token_expired',
+  UNAUTHORIZED = 'unauthorized',
+  STORAGE_ERROR = 'storage_error',
+}
+
+// Global state for maintaining auth between components
+let globalAuthState: AuthState = {
+  user: null,
+  isAuthenticated: false,
+  isLoading: false,
+  isInitialized: false,
+  error: null,
 };
 
-// Função para recuperar o usuário do localStorage
-const getUserFromStorage = (): User | null => {
-  if (typeof window !== 'undefined') {
-    const storedUser = localStorage.getItem('auth_user');
-    if (storedUser) {
-      try {
-        return JSON.parse(storedUser);
-      } catch (e) {
-        console.error('Erro ao carregar usuário do localStorage:', e);
-      }
-    }
+/**
+ * Secure storage utilities with error handling
+ * Follows Single Responsibility Principle
+ */
+class AuthStorage {
+  private static getStorageKey(key: keyof typeof APP_CONFIG.STORAGE_KEYS): string {
+    return APP_CONFIG.STORAGE_KEYS[key];
   }
-  return null;
-};
 
-// Variável global para manter a consistência entre componentes
-let globalUser: User | null = null;
-
-export function useAuth() {
-  // Always initialize with null for server-side to ensure consistency
-  const [user, setUser] = useState<User | null>(null);
-  const [hasMounted, setHasMounted] = useState(false);
-
-  // Load user data on client-side only
-  useEffect(() => {
-    // Check global variable first to maintain state between components
-    if (globalUser) {
-      setUser(globalUser);
-    } else {
-      // Try to load from localStorage
-      const storedUser = getUserFromStorage();
-      if (storedUser) {
-        globalUser = storedUser;
-        setUser(storedUser);
-      }
-    }
+  static getUserFromStorage(): User | null {
+    if (typeof window === 'undefined') return null;
     
-    setHasMounted(true);
+    try {
+      const storedUser = localStorage.getItem(this.getStorageKey('USER_DATA'));
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error('Failed to retrieve user from storage:', error);
+      return null;
+    }
+  }
+
+  static saveUserToStorage(user: User | null): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      if (user) {
+        localStorage.setItem(this.getStorageKey('USER_DATA'), JSON.stringify(user));
+      } else {
+        localStorage.removeItem(this.getStorageKey('USER_DATA'));
+      }
+    } catch (error) {
+      console.error('Failed to save user to storage:', error);
+      throw new Error(AuthError.STORAGE_ERROR);
+    }
+  }
+
+  static getTokenFromStorage(): string | null {
+    if (typeof window === 'undefined') return null;
+    
+    try {
+      return localStorage.getItem(this.getStorageKey('AUTH_TOKEN'));
+    } catch (error) {
+      console.error('Failed to retrieve token from storage:', error);
+      return null;
+    }
+  }
+
+  static saveTokenToStorage(token: string | null): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      if (token) {
+        localStorage.setItem(this.getStorageKey('AUTH_TOKEN'), token);
+      } else {
+        localStorage.removeItem(this.getStorageKey('AUTH_TOKEN'));
+      }
+    } catch (error) {
+      console.error('Failed to save token to storage:', error);
+      throw new Error(AuthError.STORAGE_ERROR);
+    }
+  }
+
+  static clearStorage(): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      localStorage.removeItem(this.getStorageKey('USER_DATA'));
+      localStorage.removeItem(this.getStorageKey('AUTH_TOKEN'));
+    } catch (error) {
+      console.error('Failed to clear storage:', error);
+    }
+  }
+}
+
+/**
+ * Enhanced authentication hook with improved error handling and type safety
+ * Implements Clean Code principles and proper error boundaries
+ */
+export function useAuth() {
+  const [authState, setAuthState] = useState<AuthState>(globalAuthState);
+
+  // Initialize authentication state on mount
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+
+        // Check if user exists in global state first
+        if (globalAuthState.user) {
+          const newState = { ...globalAuthState, isInitialized: true, isLoading: false };
+          setAuthState(newState);
+          globalAuthState = newState;
+          return;
+        }
+
+        // Try to load from localStorage
+        const storedUser = AuthStorage.getUserFromStorage();
+        const storedToken = AuthStorage.getTokenFromStorage();
+
+        if (storedUser && storedToken) {
+          const newState: AuthState = {
+            user: storedUser,
+            isAuthenticated: true,
+            isLoading: false,
+            isInitialized: true,
+            error: null,
+          };
+          
+          setAuthState(newState);
+          globalAuthState = newState;
+        } else {
+          const newState: AuthState = {
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+            isInitialized: true,
+            error: null,
+          };
+          
+          setAuthState(newState);
+          globalAuthState = newState;
+        }
+      } catch (error) {
+        const errorState: AuthState = {
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          isInitialized: true,
+          error: error instanceof Error ? error.message : AuthError.STORAGE_ERROR,
+        };
+        
+        setAuthState(errorState);
+        globalAuthState = errorState;
+      }
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = (userData: User) => {
-    globalUser = userData;
-    setUser(userData);
-    saveUserToStorage(userData);
-  };
+  // Login function with proper error handling
+  const login = useCallback(async (userData: User, token?: string): Promise<void> => {
+    try {
+      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
 
-  const logout = () => {
-    globalUser = null;
-    setUser(null);
-    saveUserToStorage(null);
-  };
+      // Save to storage
+      AuthStorage.saveUserToStorage(userData);
+      if (token) {
+        AuthStorage.saveTokenToStorage(token);
+      }
+
+      const newState: AuthState = {
+        user: userData,
+        isAuthenticated: true,
+        isLoading: false,
+        isInitialized: true,
+        error: null,
+      };
+
+      setAuthState(newState);
+      globalAuthState = newState;
+    } catch (error) {
+      const errorState: AuthState = {
+        ...authState,
+        isLoading: false,
+        error: error instanceof Error ? error.message : AuthError.STORAGE_ERROR,
+      };
+      
+      setAuthState(errorState);
+      globalAuthState = errorState;
+      throw error;
+    }
+  }, [authState]);
+
+  // Logout function with cleanup
+  const logout = useCallback(async (): Promise<void> => {
+    try {
+      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+
+      // Clear storage
+      AuthStorage.clearStorage();
+
+      const newState: AuthState = {
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        isInitialized: true,
+        error: null,
+      };
+
+      setAuthState(newState);
+      globalAuthState = newState;
+
+      // Redirect to login page
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth/login';
+      }
+    } catch (error) {
+      const errorState: AuthState = {
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        isInitialized: true,
+        error: error instanceof Error ? error.message : AuthError.STORAGE_ERROR,
+      };
+      
+      setAuthState(errorState);
+      globalAuthState = errorState;
+    }
+  }, []);
+
+  // Update user function
+  const updateUser = useCallback(async (updates: Partial<User>): Promise<void> => {
+    if (!authState.user) return;
+
+    try {
+      setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
+
+      const updatedUser: User = {
+        ...authState.user,
+        ...updates,
+        updatedAt: new Date().toISOString(),
+      };
+
+      AuthStorage.saveUserToStorage(updatedUser);
+
+      const newState: AuthState = {
+        ...authState,
+        user: updatedUser,
+        isLoading: false,
+        error: null,
+      };
+
+      setAuthState(newState);
+      globalAuthState = newState;
+    } catch (error) {
+      const errorState: AuthState = {
+        ...authState,
+        isLoading: false,
+        error: error instanceof Error ? error.message : AuthError.STORAGE_ERROR,
+      };
+      
+      setAuthState(errorState);
+      globalAuthState = errorState;
+      throw error;
+    }
+  }, [authState]);
+
+  // Clear error function
+  const clearError = useCallback((): void => {
+    setAuthState(prev => ({ ...prev, error: null }));
+    globalAuthState = { ...globalAuthState, error: null };
+  }, []);
 
   return {
-    user,
-    isAuthenticated: !!user,
-    isInitialized: hasMounted,
+    // State
+    user: authState.user,
+    isAuthenticated: authState.isAuthenticated,
+    isLoading: authState.isLoading,
+    isInitialized: authState.isInitialized,
+    error: authState.error,
+    
+    // Actions
     login,
     logout,
+    updateUser,
+    clearError,
   };
 }

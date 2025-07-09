@@ -20,9 +20,10 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { ROUTES, NAVIGATION_ITEMS } from "@/constants/app"
 
-// This is sample data.
-const data = {
+// Team data with improved typing
+const teamData = {
   user: {
     name: "shadcn",
     email: "m@example.com",
@@ -35,56 +36,35 @@ const data = {
       plan: "Enterprise",
     }
   ],
-  navMain: [
-    {
-      title:"Dashboard",
-      url: "/routes/dashboard/",
-      icon: LayoutGrid
-    },
-    {
-      title:"Médicos",
-      url: "/routes/dashboard/medicos",
-      icon: BriefcaseMedical,
-    },
-    {
-      title:"Consultas Médicas",
-      url: "/routes/dashboard/consultas",
-      icon: BookOpen,
-      items:[
-        {
-          title: "Agendar Consulta",
-          url: "/routes/dashboard/consultas/agendar",
-        },
-        {
-          title: "Histórico de Consultas",
-          url: "/routes/dashboard/consultas/historico",
-        }
-      ]
-    },
-    {
-      title:"Exames Médicos",
-      url: "/routes/dashboard/exames",
-      icon: AudioWaveform
-    },
-    {
-      title:"Enviar Exames",
-      "url": "/routes/dashboard/exames/enviar",
-      icon: FileUp
-    },
-  ]
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  // Transform NAVIGATION_ITEMS to include proper icon components and ensure proper typing
+  const navigationWithIcons = NAVIGATION_ITEMS.map(item => ({
+    title: item.title,
+    url: item.url,
+    icon: item.icon === "LayoutGrid" ? LayoutGrid :
+          item.icon === "BriefcaseMedical" ? BriefcaseMedical :
+          item.icon === "BookOpen" ? BookOpen :
+          item.icon === "AudioWaveform" ? AudioWaveform :
+          item.icon === "FileUp" ? FileUp :
+          undefined,
+    items: item.items ? item.items.map(subItem => ({
+      title: subItem.title,
+      url: subItem.url
+    })) : undefined
+  }));
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={teamData.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navigationWithIcons} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={teamData.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

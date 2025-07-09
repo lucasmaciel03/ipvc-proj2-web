@@ -20,6 +20,13 @@ export interface User {
   name: string;
   email: string;
   role: 'admin' | 'user';
+  phone?: string;
+  address?: string;
+  birthDate?: string;
+  emergencyContact?: string;
+  bloodType?: string;
+  allergies?: string;
+  avatar?: string;
 }
 
 // Tipo para estados de carregamento

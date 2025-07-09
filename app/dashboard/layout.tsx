@@ -13,6 +13,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { ROUTES } from "@/constants/app"
 
 export default function DashboardLayout({
   children,
@@ -33,13 +34,13 @@ export default function DashboardLayout({
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/routes/dashboard">
+                  <BreadcrumbLink href={ROUTES.DASHBOARD.ROOT}>
                     Dashboard
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Consultas Médicas</BreadcrumbPage>
+                  <BreadcrumbPage>Painel Principal</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
