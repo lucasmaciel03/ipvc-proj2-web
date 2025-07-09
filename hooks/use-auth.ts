@@ -33,20 +33,26 @@ const getUserFromStorage = (): User | null => {
 let globalUser: User | null = null;
 
 export function useAuth() {
+  // Always initialize with null for server-side to ensure consistency
   const [user, setUser] = useState<User | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
+  // Load user data on client-side only
   useEffect(() => {
-    // No primeiro carregamento, tenta obter o usuário do localStorage
-    if (!isInitialized) {
+    // Check global variable first to maintain state between components
+    if (globalUser) {
+      setUser(globalUser);
+    } else {
+      // Try to load from localStorage
       const storedUser = getUserFromStorage();
       if (storedUser) {
         globalUser = storedUser;
         setUser(storedUser);
       }
-      setIsInitialized(true);
     }
-  }, [isInitialized]);
+    
+    setHasMounted(true);
+  }, []);
 
   const login = (userData: User) => {
     globalUser = userData;
@@ -63,7 +69,7 @@ export function useAuth() {
   return {
     user,
     isAuthenticated: !!user,
-    isInitialized,
+    isInitialized: hasMounted,
     login,
     logout,
   };

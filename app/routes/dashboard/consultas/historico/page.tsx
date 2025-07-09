@@ -21,91 +21,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { CalendarIcon, Clock, FileText, User } from "lucide-react"
 import { useState } from "react"
-
-// Mock de histórico de consultas
-const historicoConsultasMock = [
-  {
-    id: "1",
-    data: "2025-04-15",
-    hora: "09:30",
-    medico: "Dra. Maria Costa",
-    especialidade: "Cardiologia",
-    status: "realizada",
-    observacoes: "Paciente apresentou pressão arterial elevada. Recomendado monitoramento e retorno em 1 mês."
-  },
-  {
-    id: "2",
-    data: "2025-03-20",
-    hora: "14:00",
-    medico: "Dr. José Santos",
-    especialidade: "Dermatologia",
-    status: "realizada",
-    observacoes: "Tratamento para dermatite concluído com sucesso."
-  },
-  {
-    id: "3",
-    data: "2025-02-10",
-    hora: "11:15",
-    medico: "Dr. António Silva",
-    especialidade: "Clínica Geral",
-    status: "realizada",
-    observacoes: "Check-up anual. Todos os exames dentro da normalidade."
-  },
-  {
-    id: "4",
-    data: "2025-01-07",
-    hora: "10:00",
-    medico: "Dra. Ana Ferreira",
-    especialidade: "Neurologia",
-    status: "realizada",
-    observacoes: "Avaliação de enxaquecas recorrentes. Receitado novo medicamento."
-  },
-  {
-    id: "5",
-    data: "2024-12-03",
-    hora: "15:30",
-    medico: "Dr. Carlos Oliveira",
-    especialidade: "Ortopedia",
-    status: "realizada",
-    observacoes: "Dor lombar. Recomendado fisioterapia e reavaliação em 2 meses."
-  },
-  {
-    id: "6",
-    data: "2025-04-28",
-    hora: "09:00",
-    medico: "Dr. António Silva",
-    especialidade: "Clínica Geral",
-    status: "cancelada",
-    observacoes: "Consulta cancelada pelo paciente."
-  },
-  {
-    id: "7",
-    data: "2025-03-05",
-    hora: "11:30",
-    medico: "Dra. Maria Costa",
-    especialidade: "Cardiologia",
-    status: "cancelada",
-    observacoes: "Consulta cancelada por indisponibilidade do médico."
-  }
-]
-
-// Função para formatar data de "YYYY-MM-DD" para "DD/MM/YYYY"
-function formatarData(dataString: string) {
-  const [ano, mes, dia] = dataString.split("-");
-  return `${dia}/${mes}/${ano}`;
-}
-
-// Função para extrair especialidades únicas para o filtro
-function getEspecialidadesUnicas(consultas: typeof historicoConsultasMock) {
-  return [...new Set(consultas.map(consulta => consulta.especialidade))];
-}
+import { Consulta, formatarData, getEspecialidadesUnicas, historicoConsultasMock } from "@/mocks/consultas"
 
 export default function HistoricoConsultasPage() {
   const [filtroEspecialidade, setFiltroEspecialidade] = useState<string>("all");
   const [filtroStatus, setFiltroStatus] = useState<string>("todas");
   
   // Função para filtrar consultas com base nos filtros selecionados
-  const filtrarConsultas = (consultas: typeof historicoConsultasMock) => {
+  const filtrarConsultas = (consultas: Consulta[]) => {
     return consultas.filter(consulta => {
       const matchEspecialidade = filtroEspecialidade === "all" || consulta.especialidade === filtroEspecialidade;
       const matchStatus = filtroStatus === "todas" || 
@@ -214,7 +137,7 @@ export default function HistoricoConsultasPage() {
 }
 
 // Componente de card para exibir detalhes da consulta
-function ConsultaCard({ consulta }: { consulta: typeof historicoConsultasMock[0] }) {
+function ConsultaCard({ consulta }: { consulta: Consulta }) {
   return (
     <Card>
       <CardHeader className="pb-2">
