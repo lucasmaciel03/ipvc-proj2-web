@@ -48,6 +48,20 @@
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
+
+  /* GoodDoctor Custom Colors */
+  --primary-teal: #00c9a7;
+  --primary-teal-light: #00e1c3;
+  --primary-purple: #a065e1;
+  --primary-lilac: #d69de0;
+
+  /* State variations */
+  --primary-teal-hover: #00b396;
+  --primary-teal-active: #009d85;
+  --primary-purple-hover: #9154d4;
+  --primary-purple-active: #7b42b8;
+  --primary-lilac-hover: #c88bd7;
+  --primary-lilac-active: #b879ce;
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -119,4 +133,151 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* GoodDoctor Custom Components */
+
+/* Input Field */
+.gooddoctor-input {
+  @apply w-full py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 
+         transition-all duration-200 ease-in-out
+         focus:outline-none focus:ring-2 focus:ring-[var(--primary-teal)] focus:border-transparent
+         hover:border-gray-400
+         disabled:bg-gray-50 disabled:cursor-not-allowed;
+
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.gooddoctor-input.has-left-icon {
+  padding-left: 2.75rem;
+}
+
+.gooddoctor-input.has-right-icon {
+  padding-right: 2.75rem;
+}
+
+.gooddoctor-input:focus {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(0, 201, 167, 0.1);
+}
+
+/* Primary Button */
+.gooddoctor-button-primary {
+  @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white
+         transition-all duration-200 ease-in-out transform
+         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-teal)]
+         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary-teal) 0%,
+    var(--primary-teal-light) 100%
+  );
+  box-shadow: 0 4px 14px rgba(0, 201, 167, 0.25);
+}
+
+.gooddoctor-button-primary:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--primary-teal-hover) 0%,
+    var(--primary-teal) 100%
+  );
+  box-shadow: 0 6px 20px rgba(0, 201, 167, 0.35);
+  transform: translateY(-1px);
+}
+
+.gooddoctor-button-primary:active:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--primary-teal-active) 0%,
+    var(--primary-teal-hover) 100%
+  );
+  box-shadow: 0 2px 8px rgba(0, 201, 167, 0.3);
+  transform: translateY(0);
+}
+
+/* Secondary Button */
+.gooddoctor-button-secondary {
+  @apply inline-flex items-center justify-center px-6 py-3 border-2 text-base font-medium rounded-lg
+         transition-all duration-200 ease-in-out transform
+         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-purple)]
+         disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+
+  border-color: var(--primary-purple);
+  color: var(--primary-purple);
+  background: white;
+}
+
+.gooddoctor-button-secondary:hover:not(:disabled) {
+  background: var(--primary-purple);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(160, 101, 225, 0.25);
+}
+
+.gooddoctor-button-secondary:active:not(:disabled) {
+  background: var(--primary-purple-active);
+  border-color: var(--primary-purple-active);
+  transform: translateY(0);
+}
+
+/* Gradient Text */
+.gooddoctor-gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--primary-teal) 0%,
+    var(--primary-purple) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card Shadow */
+.gooddoctor-card {
+  @apply bg-white rounded-2xl border border-gray-100;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 201, 167, 0.02);
+}
+
+.gooddoctor-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 201, 167, 0.05);
+}
+
+/* Animations */
+@keyframes gooddoctor-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gooddoctor-fade-in {
+  animation: gooddoctor-fade-in 0.5s ease-out;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.gooddoctor-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.gooddoctor-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.gooddoctor-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary-teal);
+  border-radius: 3px;
+}
+
+.gooddoctor-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-teal-hover);
 }
