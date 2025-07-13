@@ -1,0 +1,104 @@
+{
+  "name": "GoodDoctor",
+  "short_name": "GoodDoctor",
+  "description": "Sistema de Gestão Médica - Conectando pacientes e médicos de forma simples e eficiente",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-PT",
+  "categories": ["health", "medical", "productivity"],
+  "icons": [
+    {
+      "src": "/assets/logos/web/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logos/web/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/logos/android/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/android/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/ios/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Agendar Consulta",
+      "short_name": "Agendar",
+      "description": "Agendar uma nova consulta médica",
+      "url": "/dashboard/consultas/agendar",
+      "icons": [
+        {
+          "src": "/assets/logos/web/favicon-32x32.png",
+          "sizes": "32x32",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Histórico",
+      "short_name": "Histórico",
+      "description": "Ver histórico de consultas",
+      "url": "/dashboard/consultas/historico",
+      "icons": [
+        {
+          "src": "/assets/logos/web/favicon-32x32.png",
+          "sizes": "32x32",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Médicos",
+      "short_name": "Médicos",
+      "description": "Procurar médicos disponíveis",
+      "url": "/dashboard/medicos",
+      "icons": [
+        {
+          "src": "/assets/logos/web/favicon-32x32.png",
+          "sizes": "32x32",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Dashboard do GoodDoctor"
+    },
+    {
+      "src": "/assets/images/screenshot-narrow.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "App móvel do GoodDoctor"
+    }
+  ]
+}
