@@ -1,35 +1,32 @@
-'use client';
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { 
-  CalendarIcon, 
-  Clock, 
-  MoveRight, 
-  User, 
-  FileText, 
-  CheckCircle2, 
-  ArrowLeft, 
-  ChevronRight 
-} from "lucide-react"
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { format } from "date-fns"
-import { pt } from "date-fns/locale"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { formatarData } from "@/mocks/consultas"
-import { especialidades as especialidadesLista } from "@/mocks/medicos"
-import { medicosMock } from "@/mocks/medicos"
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  CalendarIcon,
+  User,
+  CheckCircle2,
+  ArrowLeft,
+  ChevronRight,
+} from "lucide-react";
+import { useState } from "react";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { format } from "date-fns";
+import { pt } from "date-fns/locale";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { formatarData } from "@/mocks/consultas";
+import { medicosMock } from "@/mocks/medicos";
+import Image from "next/image";
 
 // Especialidades médicas disponíveis
 const especialidades = [
@@ -39,13 +36,23 @@ const especialidades = [
   { id: "neurologia", nome: "Neurologia" },
   { id: "ortopedia", nome: "Ortopedia" },
   { id: "pediatria", nome: "Pediatria" },
-  { id: "psiquiatria", nome: "Psiquiatria" }
+  { id: "psiquiatria", nome: "Psiquiatria" },
 ];
 
 // Horários disponíveis
 const horarios = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", 
-  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"
+  "09:00",
+  "09:30",
+  "10:00",
+  "10:30",
+  "11:00",
+  "11:30",
+  "14:00",
+  "14:30",
+  "15:00",
+  "15:30",
+  "16:00",
+  "16:30",
 ];
 
 // Tipos de consulta
@@ -53,7 +60,7 @@ const tiposConsulta = [
   { id: "primeira", nome: "Primeira Consulta" },
   { id: "retorno", nome: "Consulta de Retorno" },
   { id: "urgencia", nome: "Consulta de Urgência" },
-  { id: "exame", nome: "Avaliação de Exames" }
+  { id: "exame", nome: "Avaliação de Exames" },
 ];
 
 export default function AgendarConsultaPage() {
@@ -69,15 +76,17 @@ export default function AgendarConsultaPage() {
   const [agendamentoCompleto, setAgendamentoCompleto] = useState(false);
 
   // Filtra médicos pela especialidade selecionada
-  const medicosFiltrados = especialidadeSelecionada 
-    ? medicosMock.filter(medico => 
-        medico.especialidade.toLowerCase() === especialidadeSelecionada)
+  const medicosFiltrados = especialidadeSelecionada
+    ? medicosMock.filter(
+        (medico) =>
+          medico.especialidade.toLowerCase() === especialidadeSelecionada
+      )
     : [];
 
   // Função para calcular a data mínima (hoje)
   const getDataMinima = () => {
     const hoje = new Date();
-    return hoje.toISOString().split('T')[0];
+    return hoje.toISOString().split("T")[0];
   };
 
   // Função para formatar a data em formato legível
@@ -165,9 +174,12 @@ export default function AgendarConsultaPage() {
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <CheckCircle2 className="h-6 w-6 text-primary" />
               </div>
-              <h2 className="text-2xl font-semibold mb-2">Agendamento Confirmado</h2>
+              <h2 className="text-2xl font-semibold mb-2">
+                Agendamento Confirmado
+              </h2>
               <p className="text-muted-foreground">
-                Sua consulta foi agendada com sucesso. Um lembrete será enviado para você.
+                Sua consulta foi agendada com sucesso. Um lembrete será enviado
+                para você.
               </p>
             </div>
 
@@ -175,28 +187,39 @@ export default function AgendarConsultaPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">ESPECIALIDADE</p>
-                  <p className="font-medium">{especialidades.find(e => e.id === especialidadeSelecionada)?.nome}</p>
+                  <p className="font-medium">
+                    {
+                      especialidades.find(
+                        (e) => e.id === especialidadeSelecionada
+                      )?.nome
+                    }
+                  </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">MÉDICO</p>
-                  <p className="font-medium">{medicosMock.find(m => m.id === medicoSelecionado)?.nome}</p>
+                  <p className="font-medium">
+                    {medicosMock.find((m) => m.id === medicoSelecionado)?.nome}
+                  </p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">DATA E HORA</p>
-                  <p className="font-medium">{formatarDataLegivel(dataSelecionada)}, às {horaSelecionada}</p>
+                  <p className="font-medium">
+                    {formatarDataLegivel(dataSelecionada)}, às {horaSelecionada}
+                  </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">TIPO DE CONSULTA</p>
-                  <p className="font-medium">{tiposConsulta.find(t => t.id === tipoConsulta)?.nome}</p>
+                  <p className="text-xs text-muted-foreground">
+                    TIPO DE CONSULTA
+                  </p>
+                  <p className="font-medium">
+                    {tiposConsulta.find((t) => t.id === tipoConsulta)?.nome}
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="flex justify-center">
-              <Button 
-                onClick={reiniciarFormulario} 
-                className="min-w-[200px]"
-              >
+              <Button onClick={reiniciarFormulario} className="min-w-[200px]">
                 Agendar nova consulta
               </Button>
             </div>
@@ -220,28 +243,64 @@ export default function AgendarConsultaPage() {
           {/* Indicador de progresso - Versão corrigida */}
           <div className="border-b">
             <div className="flex items-center">
-              <div 
-                className={`flex-1 rounded-none h-14 border-b-2 flex flex-col items-center justify-center ${etapaAtual === 'especialidade' ? 'border-primary text-primary' : 'border-transparent'}`}
+              <div
+                className={`flex-1 rounded-none h-14 border-b-2 flex flex-col items-center justify-center ${
+                  etapaAtual === "especialidade"
+                    ? "border-primary text-primary"
+                    : "border-transparent"
+                }`}
               >
-                <div className={`w-6 h-6 rounded-full ${etapaAtual === 'especialidade' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'} flex items-center justify-center mb-1 text-xs`}>1</div>
+                <div
+                  className={`w-6 h-6 rounded-full ${
+                    etapaAtual === "especialidade"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  } flex items-center justify-center mb-1 text-xs`}
+                >
+                  1
+                </div>
                 <span className="text-xs sm:text-sm">Especialidade</span>
               </div>
 
               <div className="w-5 h-1 bg-muted" />
 
-              <div 
-                className={`flex-1 rounded-none h-14 border-b-2 flex flex-col items-center justify-center ${etapaAtual === 'data' ? 'border-primary text-primary' : 'border-transparent'}`}
+              <div
+                className={`flex-1 rounded-none h-14 border-b-2 flex flex-col items-center justify-center ${
+                  etapaAtual === "data"
+                    ? "border-primary text-primary"
+                    : "border-transparent"
+                }`}
               >
-                <div className={`w-6 h-6 rounded-full ${etapaAtual === 'data' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'} flex items-center justify-center mb-1 text-xs`}>2</div>
+                <div
+                  className={`w-6 h-6 rounded-full ${
+                    etapaAtual === "data"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  } flex items-center justify-center mb-1 text-xs`}
+                >
+                  2
+                </div>
                 <span className="text-xs sm:text-sm">Data e Hora</span>
               </div>
 
               <div className="w-5 h-1 bg-muted" />
 
-              <div 
-                className={`flex-1 rounded-none h-14 border-b-2 flex flex-col items-center justify-center ${etapaAtual === 'detalhes' ? 'border-primary text-primary' : 'border-transparent'}`}
+              <div
+                className={`flex-1 rounded-none h-14 border-b-2 flex flex-col items-center justify-center ${
+                  etapaAtual === "detalhes"
+                    ? "border-primary text-primary"
+                    : "border-transparent"
+                }`}
               >
-                <div className={`w-6 h-6 rounded-full ${etapaAtual === 'detalhes' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'} flex items-center justify-center mb-1 text-xs`}>3</div>
+                <div
+                  className={`w-6 h-6 rounded-full ${
+                    etapaAtual === "detalhes"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  } flex items-center justify-center mb-1 text-xs`}
+                >
+                  3
+                </div>
                 <span className="text-xs sm:text-sm">Detalhes</span>
               </div>
             </div>
@@ -253,13 +312,17 @@ export default function AgendarConsultaPage() {
               <TabsContent value="especialidade" className="m-0 py-4">
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Selecione a especialidade e o médico</h3>
-                    
+                    <h3 className="text-lg font-medium">
+                      Selecione a especialidade e o médico
+                    </h3>
+
                     <div className="grid gap-6 md:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="especialidade">Especialidade médica</Label>
-                        <Select 
-                          value={especialidadeSelecionada} 
+                        <Label htmlFor="especialidade">
+                          Especialidade médica
+                        </Label>
+                        <Select
+                          value={especialidadeSelecionada}
                           onValueChange={setEspecialidadeSelecionada}
                         >
                           <SelectTrigger id="especialidade">
@@ -267,7 +330,10 @@ export default function AgendarConsultaPage() {
                           </SelectTrigger>
                           <SelectContent>
                             {especialidades.map((especialidade) => (
-                              <SelectItem key={especialidade.id} value={especialidade.id}>
+                              <SelectItem
+                                key={especialidade.id}
+                                value={especialidade.id}
+                              >
                                 {especialidade.nome}
                               </SelectItem>
                             ))}
@@ -277,13 +343,19 @@ export default function AgendarConsultaPage() {
 
                       <div className="space-y-2">
                         <Label htmlFor="medico">Médico</Label>
-                        <Select 
-                          value={medicoSelecionado} 
+                        <Select
+                          value={medicoSelecionado}
                           onValueChange={setMedicoSelecionado}
                           disabled={!especialidadeSelecionada}
                         >
                           <SelectTrigger id="medico">
-                            <SelectValue placeholder={especialidadeSelecionada ? "Selecione um médico" : "Primeiro selecione uma especialidade"} />
+                            <SelectValue
+                              placeholder={
+                                especialidadeSelecionada
+                                  ? "Selecione um médico"
+                                  : "Primeiro selecione uma especialidade"
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent>
                             {medicosFiltrados.map((medico) => (
@@ -300,10 +372,21 @@ export default function AgendarConsultaPage() {
                   {medicoSelecionado && (
                     <div className="bg-muted/50 rounded-lg p-4">
                       <div className="flex items-start gap-3">
-                        {medicosMock.find(m => m.id === medicoSelecionado)?.foto ? (
-                          <img 
-                            src={medicosMock.find(m => m.id === medicoSelecionado)?.foto} 
-                            alt={medicosMock.find(m => m.id === medicoSelecionado)?.nome}
+                        {medicosMock.find((m) => m.id === medicoSelecionado)
+                          ?.foto ? (
+                          <Image
+                            src={
+                              medicosMock.find(
+                                (m) => m.id === medicoSelecionado
+                              )?.foto || ""
+                            }
+                            alt={
+                              medicosMock.find(
+                                (m) => m.id === medicoSelecionado
+                              )?.nome || ""
+                            }
+                            width={40}
+                            height={40}
                             className="h-10 w-10 rounded-full object-cover"
                           />
                         ) : (
@@ -312,10 +395,25 @@ export default function AgendarConsultaPage() {
                           </div>
                         )}
                         <div>
-                          <h4 className="font-medium">{medicosMock.find(m => m.id === medicoSelecionado)?.nome}</h4>
+                          <h4 className="font-medium">
+                            {
+                              medicosMock.find(
+                                (m) => m.id === medicoSelecionado
+                              )?.nome
+                            }
+                          </h4>
                           <p className="text-sm text-muted-foreground">
-                            {especialidades.find(e => e.id === especialidadeSelecionada)?.nome} • 
-                            {medicosMock.find(m => m.id === medicoSelecionado)?.hospital}
+                            {
+                              especialidades.find(
+                                (e) => e.id === especialidadeSelecionada
+                              )?.nome
+                            }{" "}
+                            •
+                            {
+                              medicosMock.find(
+                                (m) => m.id === medicoSelecionado
+                              )?.hospital
+                            }
                           </p>
                         </div>
                       </div>
@@ -328,8 +426,10 @@ export default function AgendarConsultaPage() {
               <TabsContent value="data" className="m-0 py-4">
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Selecione a data e o horário</h3>
-                    
+                    <h3 className="text-lg font-medium">
+                      Selecione a data e o horário
+                    </h3>
+
                     <div className="grid gap-6 md:grid-cols-2">
                       <div className="space-y-2">
                         <Label htmlFor="data">Data da consulta</Label>
@@ -345,16 +445,22 @@ export default function AgendarConsultaPage() {
                           <CalendarIcon className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
                         </div>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label htmlFor="hora">Horário disponível</Label>
-                        <Select 
-                          value={horaSelecionada} 
+                        <Select
+                          value={horaSelecionada}
                           onValueChange={setHoraSelecionada}
                           disabled={!dataSelecionada}
                         >
                           <SelectTrigger id="hora">
-                            <SelectValue placeholder={dataSelecionada ? "Selecione um horário" : "Primeiro selecione uma data"} />
+                            <SelectValue
+                              placeholder={
+                                dataSelecionada
+                                  ? "Selecione um horário"
+                                  : "Primeiro selecione uma data"
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent>
                             {horarios.map((horario) => (
@@ -386,14 +492,25 @@ export default function AgendarConsultaPage() {
                             )}
                           </div>
                         </div>
-                        
+
                         <div className="border-t border-border pt-4 mt-2">
                           <div className="flex items-start gap-3">
-                            {medicosMock.find(m => m.id === medicoSelecionado)?.foto ? (
-                              <img 
-                                src={medicosMock.find(m => m.id === medicoSelecionado)?.foto} 
-                                alt={medicosMock.find(m => m.id === medicoSelecionado)?.nome}
-                                className="h-10 w-10 rounded-full object-cover" 
+                            {medicosMock.find((m) => m.id === medicoSelecionado)
+                              ?.foto ? (
+                              <Image
+                                src={
+                                  medicosMock.find(
+                                    (m) => m.id === medicoSelecionado
+                                  )?.foto || ""
+                                }
+                                alt={
+                                  medicosMock.find(
+                                    (m) => m.id === medicoSelecionado
+                                  )?.nome || ""
+                                }
+                                width={40}
+                                height={40}
+                                className="h-10 w-10 rounded-full object-cover"
                               />
                             ) : (
                               <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -401,9 +518,19 @@ export default function AgendarConsultaPage() {
                               </div>
                             )}
                             <div>
-                              <h4 className="font-medium">{medicosMock.find(m => m.id === medicoSelecionado)?.nome}</h4>
+                              <h4 className="font-medium">
+                                {
+                                  medicosMock.find(
+                                    (m) => m.id === medicoSelecionado
+                                  )?.nome
+                                }
+                              </h4>
                               <p className="text-sm text-muted-foreground">
-                                {especialidades.find(e => e.id === especialidadeSelecionada)?.nome}
+                                {
+                                  especialidades.find(
+                                    (e) => e.id === especialidadeSelecionada
+                                  )?.nome
+                                }
                               </p>
                             </div>
                           </div>
@@ -418,13 +545,15 @@ export default function AgendarConsultaPage() {
               <TabsContent value="detalhes" className="m-0 py-4">
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Forneça os detalhes da consulta</h3>
-                    
+                    <h3 className="text-lg font-medium">
+                      Forneça os detalhes da consulta
+                    </h3>
+
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="tipo-consulta">Tipo de consulta</Label>
-                        <Select 
-                          value={tipoConsulta} 
+                        <Select
+                          value={tipoConsulta}
                           onValueChange={setTipoConsulta}
                         >
                           <SelectTrigger id="tipo-consulta">
@@ -439,10 +568,10 @@ export default function AgendarConsultaPage() {
                           </SelectContent>
                         </Select>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <Label htmlFor="motivo">Motivo da consulta</Label>
-                        <Textarea 
+                        <Textarea
                           id="motivo"
                           placeholder="Descreva brevemente o motivo da consulta e seus sintomas..."
                           className="min-h-[100px] resize-none"
@@ -450,14 +579,15 @@ export default function AgendarConsultaPage() {
                           onChange={(e) => setMotivo(e.target.value)}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Estas informações ajudarão o médico a se preparar para sua consulta.
+                          Estas informações ajudarão o médico a se preparar para
+                          sua consulta.
                         </p>
                       </div>
-                      
+
                       <div className="space-y-3">
                         <Label>Preferência de contato</Label>
-                        <RadioGroup 
-                          value={preferenciaContato} 
+                        <RadioGroup
+                          value={preferenciaContato}
                           onValueChange={setPreferenciaContato}
                           className="grid grid-cols-3 gap-2"
                         >
@@ -480,30 +610,49 @@ export default function AgendarConsultaPage() {
 
                   <div className="bg-muted/50 rounded-lg p-4">
                     <h4 className="font-medium mb-3">Resumo do agendamento</h4>
-                    
+
                     <div className="space-y-4">
                       <div className="grid md:grid-cols-2 gap-3 text-sm">
                         <div className="flex items-center gap-2">
                           <User className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="font-medium">{medicosMock.find(m => m.id === medicoSelecionado)?.nome}</p>
-                            <p className="text-muted-foreground">{especialidades.find(e => e.id === especialidadeSelecionada)?.nome}</p>
+                            <p className="font-medium">
+                              {
+                                medicosMock.find(
+                                  (m) => m.id === medicoSelecionado
+                                )?.nome
+                              }
+                            </p>
+                            <p className="text-muted-foreground">
+                              {
+                                especialidades.find(
+                                  (e) => e.id === especialidadeSelecionada
+                                )?.nome
+                              }
+                            </p>
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center gap-2">
                           <CalendarIcon className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="font-medium">{formatarData(dataSelecionada)}</p>
-                            <p className="text-muted-foreground">às {horaSelecionada}</p>
+                            <p className="font-medium">
+                              {formatarData(dataSelecionada)}
+                            </p>
+                            <p className="text-muted-foreground">
+                              às {horaSelecionada}
+                            </p>
                           </div>
                         </div>
                       </div>
-                      
+
                       {tipoConsulta && (
                         <div className="pt-3 border-t border-border">
                           <p className="text-sm font-medium">
-                            {tiposConsulta.find(t => t.id === tipoConsulta)?.nome}
+                            {
+                              tiposConsulta.find((t) => t.id === tipoConsulta)
+                                ?.nome
+                            }
                           </p>
                         </div>
                       )}
@@ -515,9 +664,9 @@ export default function AgendarConsultaPage() {
 
             <div className="flex justify-between mt-8">
               {etapaAtual !== "especialidade" && (
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={voltarEtapa}
                   className="gap-2"
                 >
@@ -525,15 +674,17 @@ export default function AgendarConsultaPage() {
                   Voltar
                 </Button>
               )}
-              
+
               <div className={etapaAtual === "especialidade" ? "ml-auto" : ""}>
-                <Button 
-                  type={etapaAtual === "detalhes" ? "submit" : "button"} 
+                <Button
+                  type={etapaAtual === "detalhes" ? "submit" : "button"}
                   onClick={etapaAtual !== "detalhes" ? avancarEtapa : undefined}
                   disabled={!podeAvancar()}
                   className="gap-2"
                 >
-                  {etapaAtual === "detalhes" ? "Confirmar Agendamento" : "Continuar"}
+                  {etapaAtual === "detalhes"
+                    ? "Confirmar Agendamento"
+                    : "Continuar"}
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
@@ -542,5 +693,5 @@ export default function AgendarConsultaPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

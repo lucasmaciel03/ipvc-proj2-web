@@ -1,20 +1,9 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react"
+import { useRouter } from "next/navigation";
+import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,17 +12,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { useAuth } from "@/hooks/use-auth"
-import { useState } from "react"
-import { NotificationsDrawer } from "@/components/notifications/notifications-drawer"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/hooks/use-auth";
+import { useState } from "react";
+import { NotificationsDrawer } from "@/components/notifications/notifications-drawer";
+import { Badge } from "@/components/ui/badge";
 
 // Definindo as animações CSS para o efeito de borda pulsante
 const notificationAnimationStyles = `
@@ -74,57 +63,66 @@ export function NavUser({
   user,
 }: {
   user: {
-    name: string
-    email: string
-    avatar: string
-  }
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }) {
-  const { isMobile } = useSidebar()
-  const { user: authUser, logout } = useAuth()
-  const router = useRouter()
-  const [notificationsDrawerOpen, setNotificationsDrawerOpen] = useState(false)
-  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true)
-  
+  const { isMobile } = useSidebar();
+  const { user: authUser, logout } = useAuth();
+  const router = useRouter();
+  const [notificationsDrawerOpen, setNotificationsDrawerOpen] = useState(false);
+  const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true);
+
   // Se temos um usuário autenticado, use seus dados em vez dos dados padrão
   const displayUser = {
     name: authUser?.name || user.name,
     email: authUser?.email || user.email,
     avatar: authUser?.avatar || user.avatar,
-  }
-  
+  };
+
   const handleLogout = () => {
-    logout()
-    router.push("/auth/login")
-  }
+    logout();
+    router.push("/auth/login");
+  };
 
   const handleNotificationsViewed = () => {
     setHasUnreadNotifications(false);
-  }
+  };
 
   return (
     <>
       {/* Injeta os estilos de animação no componente */}
-      <style jsx global>{notificationAnimationStyles}</style>
-      
+      <style jsx global>
+        {notificationAnimationStyles}
+      </style>
+
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size="lg"
-                className={`relative data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${hasUnreadNotifications ? 'notification-pulse' : ''}`}
+                className={`relative data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${
+                  hasUnreadNotifications ? "notification-pulse" : ""
+                }`}
               >
                 {hasUnreadNotifications && (
                   <span className="notification-indicator" aria-hidden="true" />
                 )}
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={displayUser.avatar} alt={displayUser.name} />
+                  <AvatarImage
+                    src={displayUser.avatar}
+                    alt={displayUser.name}
+                  />
                   <AvatarFallback className="rounded-lg">
                     {displayUser.name.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{displayUser.name}</span>
+                  <span className="truncate font-medium">
+                    {displayUser.name}
+                  </span>
                   <span className="truncate text-xs">{displayUser.email}</span>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4" />
@@ -139,30 +137,43 @@ export function NavUser({
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={displayUser.avatar} alt={displayUser.name} />
+                    <AvatarImage
+                      src={displayUser.avatar}
+                      alt={displayUser.name}
+                    />
                     <AvatarFallback className="rounded-lg">
                       {displayUser.name.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{displayUser.name}</span>
-                    <span className="truncate text-xs">{displayUser.email}</span>
+                    <span className="truncate font-medium">
+                      {displayUser.name}
+                    </span>
+                    <span className="truncate text-xs">
+                      {displayUser.email}
+                    </span>
                   </div>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => router.push("/dashboard/account")}>
+                <DropdownMenuItem
+                  onClick={() => router.push("/dashboard/account")}
+                >
                   <BadgeCheck className="mr-2 h-4 w-4" />
                   <span>Account</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setNotificationsDrawerOpen(true)}>
+                <DropdownMenuItem
+                  onClick={() => setNotificationsDrawerOpen(true)}
+                >
                   <div className="relative mr-2">
-                    <Bell className={`h-4 w-4 ${hasUnreadNotifications ? 'text-primary' : ''}`} />
+                    <Bell
+                      className={`h-4 w-4 ${
+                        hasUnreadNotifications ? "text-primary" : ""
+                      }`}
+                    />
                     {hasUnreadNotifications && (
-                      <Badge 
-                        className="absolute -right-1 -top-1.5 h-3 w-3 p-0 flex items-center justify-center text-[10px]"
-                      >
+                      <Badge className="absolute -right-1 -top-1.5 h-3 w-3 p-0 flex items-center justify-center text-[10px]">
                         2
                       </Badge>
                     )}
@@ -179,12 +190,12 @@ export function NavUser({
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-      
-      <NotificationsDrawer 
-        open={notificationsDrawerOpen} 
-        onOpenChange={setNotificationsDrawerOpen} 
+
+      <NotificationsDrawer
+        open={notificationsDrawerOpen}
+        onOpenChange={setNotificationsDrawerOpen}
         onNotificationsViewed={handleNotificationsViewed}
       />
     </>
-  )
+  );
 }

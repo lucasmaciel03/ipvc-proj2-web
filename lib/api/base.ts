@@ -22,11 +22,11 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
  * HTTP Methods enum for type safety
  */
 export enum HttpMethod {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  PATCH = "PATCH",
+  DELETE = "DELETE",
 }
 
 /**
@@ -37,10 +37,10 @@ export class ApiError extends Error {
     public message: string,
     public status: number,
     public code?: string,
-    public details?: any
+    public details?: Record<string, unknown>
   ) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
   }
 }
 
@@ -52,10 +52,10 @@ export abstract class BaseApiService {
   protected baseUrl: string;
   protected defaultHeaders: Record<string, string>;
 
-  constructor(baseUrl: string = '/api') {
+  constructor(baseUrl: string = "/api") {
     this.baseUrl = baseUrl;
     this.defaultHeaders = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     };
   }
 
@@ -63,14 +63,14 @@ export abstract class BaseApiService {
    * Set authentication token for requests
    */
   setAuthToken(token: string): void {
-    this.defaultHeaders['Authorization'] = `Bearer ${token}`;
+    this.defaultHeaders["Authorization"] = `Bearer ${token}`;
   }
 
   /**
    * Remove authentication token
    */
   removeAuthToken(): void {
-    delete this.defaultHeaders['Authorization'];
+    delete this.defaultHeaders["Authorization"];
   }
 
   /**
@@ -95,7 +95,7 @@ export abstract class BaseApiService {
 
       if (!response.ok) {
         throw new ApiError(
-          data.message || 'Request failed',
+          data.message || "Request failed",
           response.status,
           data.code,
           data.errors
@@ -110,10 +110,10 @@ export abstract class BaseApiService {
 
       // Handle network errors
       throw new ApiError(
-        'Network error occurred',
+        "Network error occurred",
         0,
-        'NETWORK_ERROR',
-        error
+        "NETWORK_ERROR",
+        error instanceof Error ? { message: error.message } : undefined
       );
     }
   }
@@ -121,10 +121,20 @@ export abstract class BaseApiService {
   /**
    * HTTP GET request
    */
-  protected async get<T>(endpoint: string, params?: Record<string, any>): Promise<ApiResponse<T>> {
-    const searchParams = params ? new URLSearchParams(params).toString() : '';
+  protected async get<T>(
+    endpoint: string,
+    params?: Record<string, string | number | boolean>
+  ): Promise<ApiResponse<T>> {
+    const searchParams = params
+      ? new URLSearchParams(
+          Object.entries(params).reduce((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+          }, {} as Record<string, string>)
+        ).toString()
+      : "";
     const url = searchParams ? `${endpoint}?${searchParams}` : endpoint;
-    
+
     return this.request<T>(url, {
       method: HttpMethod.GET,
     });
@@ -133,7 +143,10 @@ export abstract class BaseApiService {
   /**
    * HTTP POST request
    */
-  protected async post<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  protected async post<T>(
+    endpoint: string,
+    data?: unknown
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: HttpMethod.POST,
       body: data ? JSON.stringify(data) : undefined,
@@ -143,7 +156,10 @@ export abstract class BaseApiService {
   /**
    * HTTP PUT request
    */
-  protected async put<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  protected async put<T>(
+    endpoint: string,
+    data?: unknown
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: HttpMethod.PUT,
       body: data ? JSON.stringify(data) : undefined,
@@ -153,7 +169,10 @@ export abstract class BaseApiService {
   /**
    * HTTP PATCH request
    */
-  protected async patch<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  protected async patch<T>(
+    endpoint: string,
+    data?: unknown
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: HttpMethod.PATCH,
       body: data ? JSON.stringify(data) : undefined,
@@ -172,10 +191,14 @@ export abstract class BaseApiService {
   /**
    * File upload request
    */
-  protected async upload<T>(endpoint: string, file: File, additionalData?: Record<string, any>): Promise<ApiResponse<T>> {
+  protected async upload<T>(
+    endpoint: string,
+    file: File,
+    additionalData?: Record<string, string | number | boolean>
+  ): Promise<ApiResponse<T>> {
     const formData = new FormData();
-    formData.append('file', file);
-    
+    formData.append("file", file);
+
     if (additionalData) {
       Object.entries(additionalData).forEach(([key, value]) => {
         formData.append(key, value.toString());
@@ -183,7 +206,7 @@ export abstract class BaseApiService {
     }
 
     const headers = { ...this.defaultHeaders };
-    delete headers['Content-Type']; // Let browser set content-type for FormData
+    delete headers["Content-Type"]; // Let browser set content-type for FormData
 
     return this.request<T>(endpoint, {
       method: HttpMethod.POST,

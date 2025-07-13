@@ -1,4 +1,4 @@
-import { APP_CONFIG } from '@/constants/app';
+import { APP_CONFIG } from "@/constants/app";
 
 /**
  * Validation utilities following Clean Code principles
@@ -12,8 +12,8 @@ export interface ValidationResult {
 
 export class ValidationError extends Error {
   constructor(public errors: string[]) {
-    super(`Validation failed: ${errors.join(', ')}`);
-    this.name = 'ValidationError';
+    super(`Validation failed: ${errors.join(", ")}`);
+    this.name = "ValidationError";
   }
 }
 
@@ -22,16 +22,16 @@ export class ValidationError extends Error {
  */
 export function validateEmail(email: string): ValidationResult {
   const errors: string[] = [];
-  
-  if (!email || email.trim() === '') {
-    errors.push('Email é obrigatório');
+
+  if (!email || email.trim() === "") {
+    errors.push("Email é obrigatório");
   } else if (!APP_CONFIG.VALIDATION.EMAIL_REGEX.test(email)) {
-    errors.push('Email deve ter um formato válido');
+    errors.push("Email deve ter um formato válido");
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
@@ -40,16 +40,18 @@ export function validateEmail(email: string): ValidationResult {
  */
 export function validatePassword(password: string): ValidationResult {
   const errors: string[] = [];
-  
-  if (!password || password.trim() === '') {
-    errors.push('Senha é obrigatória');
+
+  if (!password || password.trim() === "") {
+    errors.push("Senha é obrigatória");
   } else if (password.length < APP_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH) {
-    errors.push(`Senha deve ter pelo menos ${APP_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH} caracteres`);
+    errors.push(
+      `Senha deve ter pelo menos ${APP_CONFIG.VALIDATION.PASSWORD_MIN_LENGTH} caracteres`
+    );
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
@@ -58,127 +60,144 @@ export function validatePassword(password: string): ValidationResult {
  */
 export function validatePhone(phone: string): ValidationResult {
   const errors: string[] = [];
-  
+
   if (phone && !APP_CONFIG.VALIDATION.PHONE_REGEX.test(phone)) {
-    errors.push('Telefone deve ter um formato válido (+351XXXXXXXXX)');
+    errors.push("Telefone deve ter um formato válido (+351XXXXXXXXX)");
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 /**
  * Required field validation utility
  */
-export function validateRequired(value: any, fieldName: string): ValidationResult {
+export function validateRequired(
+  value: unknown,
+  fieldName: string
+): ValidationResult {
   const errors: string[] = [];
-  
-  if (value === null || value === undefined || value === '') {
+
+  if (value === null || value === undefined || value === "") {
     errors.push(`${fieldName} é obrigatório`);
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 /**
  * Date validation utility
  */
-export function validateDate(date: string | Date, fieldName: string = 'Data'): ValidationResult {
+export function validateDate(
+  date: string | Date,
+  fieldName: string = "Data"
+): ValidationResult {
   const errors: string[] = [];
-  
+
   if (!date) {
     errors.push(`${fieldName} é obrigatória`);
   } else {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+
     if (isNaN(dateObj.getTime())) {
       errors.push(`${fieldName} deve ter um formato válido`);
     }
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 /**
  * Future date validation utility
  */
-export function validateFutureDate(date: string | Date, fieldName: string = 'Data'): ValidationResult {
+export function validateFutureDate(
+  date: string | Date,
+  fieldName: string = "Data"
+): ValidationResult {
   const dateValidation = validateDate(date, fieldName);
-  
+
   if (!dateValidation.isValid) {
     return dateValidation;
   }
-  
+
   const errors: string[] = [];
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const dateObj = typeof date === "string" ? new Date(date) : date;
   const now = new Date();
-  
+
   if (dateObj <= now) {
     errors.push(`${fieldName} deve ser uma data futura`);
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 /**
  * Time validation utility
  */
-export function validateTime(time: string, fieldName: string = 'Hora'): ValidationResult {
+export function validateTime(
+  time: string,
+  fieldName: string = "Hora"
+): ValidationResult {
   const errors: string[] = [];
-  
+
   if (!time) {
     errors.push(`${fieldName} é obrigatória`);
   } else {
     const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-    
+
     if (!timeRegex.test(time)) {
       errors.push(`${fieldName} deve ter formato HH:MM`);
     }
   }
-  
+
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 /**
  * Composite validation utility - validates multiple fields
  */
-export function validateForm(validations: (() => ValidationResult)[]): ValidationResult {
+export function validateForm(
+  validations: (() => ValidationResult)[]
+): ValidationResult {
   const allErrors: string[] = [];
-  
-  validations.forEach(validation => {
+
+  validations.forEach((validation) => {
     const result = validation();
     if (!result.isValid) {
       allErrors.push(...result.errors);
     }
   });
-  
+
   return {
     isValid: allErrors.length === 0,
-    errors: allErrors
+    errors: allErrors,
   };
 }
 
 /**
  * Login form validation
  */
-export function validateLoginForm(email: string, password: string): ValidationResult {
+export function validateLoginForm(
+  email: string,
+  password: string
+): ValidationResult {
   return validateForm([
     () => validateEmail(email),
-    () => validatePassword(password)
+    () => validatePassword(password),
   ]);
 }
 
@@ -194,9 +213,9 @@ export interface ConsultaFormData {
 
 export function validateConsultaForm(data: ConsultaFormData): ValidationResult {
   return validateForm([
-    () => validateRequired(data.medicoId, 'Médico'),
-    () => validateRequired(data.especialidade, 'Especialidade'),
-    () => validateFutureDate(data.dataHora, 'Data e hora da consulta')
+    () => validateRequired(data.medicoId, "Médico"),
+    () => validateRequired(data.especialidade, "Especialidade"),
+    () => validateFutureDate(data.dataHora, "Data e hora da consulta"),
   ]);
 }
 
@@ -211,13 +230,13 @@ export interface UserProfileData {
 
 export function validateUserProfile(data: UserProfileData): ValidationResult {
   const validations = [
-    () => validateRequired(data.name, 'Nome'),
-    () => validateEmail(data.email)
+    () => validateRequired(data.name, "Nome"),
+    () => validateEmail(data.email),
   ];
-  
+
   if (data.phone) {
     validations.push(() => validatePhone(data.phone!));
   }
-  
+
   return validateForm(validations);
 }

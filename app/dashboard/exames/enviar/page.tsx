@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { FileUp, Loader2, Upload } from "lucide-react"
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { FileUp, Upload } from "lucide-react";
 
 export default function EnviarExamesPage() {
   return (
@@ -38,24 +38,22 @@ export default function EnviarExamesPage() {
                     <SelectItem value="raio-x">Raio-X</SelectItem>
                     <SelectItem value="tomografia">Tomografia</SelectItem>
                     <SelectItem value="ultrassom">Ultrassom</SelectItem>
-                    <SelectItem value="ressonancia">Ressonância Magnética</SelectItem>
+                    <SelectItem value="ressonancia">
+                      Ressonância Magnética
+                    </SelectItem>
                     <SelectItem value="outro">Outro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <label htmlFor="data-exame" className="text-sm font-medium">
                   Data do Exame
                 </label>
-                <Input 
-                  id="data-exame" 
-                  type="date" 
-                  className="w-full" 
-                />
+                <Input id="data-exame" type="date" className="w-full" />
               </div>
             </div>
-            
+
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <label htmlFor="medico" className="text-sm font-medium">
@@ -66,41 +64,41 @@ export default function EnviarExamesPage() {
                     <SelectValue placeholder="Selecione o médico" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="dr-antonio">Dr. António Silva</SelectItem>
+                    <SelectItem value="dr-antonio">
+                      Dr. António Silva
+                    </SelectItem>
                     <SelectItem value="dra-maria">Dra. Maria Costa</SelectItem>
                     <SelectItem value="dr-jose">Dr. José Santos</SelectItem>
                     <SelectItem value="outro">Outro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <label htmlFor="local" className="text-sm font-medium">
                   Local de Realização
                 </label>
-                <Input 
-                  id="local" 
-                  placeholder="Ex: Hospital São João" 
-                  className="w-full" 
+                <Input
+                  id="local"
+                  placeholder="Ex: Hospital São João"
+                  className="w-full"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <label htmlFor="descricao" className="text-sm font-medium">
                 Descrição ou Observações
               </label>
-              <Textarea 
-                id="descricao" 
-                placeholder="Adicione informações relevantes sobre o exame..." 
-                className="min-h-[100px]" 
+              <Textarea
+                id="descricao"
+                placeholder="Adicione informações relevantes sobre o exame..."
+                className="min-h-[100px]"
               />
             </div>
-            
+
             <div className="space-y-4">
-              <label className="text-sm font-medium">
-                Arquivos do Exame
-              </label>
+              <label className="text-sm font-medium">Arquivos do Exame</label>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="flex items-center justify-center w-full">
                   <label
@@ -119,9 +117,11 @@ export default function EnviarExamesPage() {
                     <Input id="arquivo-exame" type="file" className="hidden" />
                   </label>
                 </div>
-                
+
                 <div className="border rounded-lg p-4">
-                  <h4 className="text-sm font-medium mb-2">Arquivos Enviados</h4>
+                  <h4 className="text-sm font-medium mb-2">
+                    Arquivos Enviados
+                  </h4>
                   <div className="text-sm text-muted-foreground italic">
                     Nenhum arquivo enviado
                   </div>
@@ -140,7 +140,7 @@ export default function EnviarExamesPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex justify-end gap-2">
               <Button variant="outline">Cancelar</Button>
               <Button type="submit" className="gap-1">
@@ -152,5 +152,5 @@ export default function EnviarExamesPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

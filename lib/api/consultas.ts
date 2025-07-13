@@ -1,5 +1,5 @@
-import { BaseApiService, ApiResponse, PaginatedResponse } from './base';
-import { API_ENDPOINTS, ConsultaStatus } from '@/constants/app';
+import { BaseApiService, ApiResponse, PaginatedResponse } from "./base";
+import { API_ENDPOINTS, ConsultaStatus } from "@/constants/app";
 
 export interface Consulta {
   id: string;
@@ -48,10 +48,36 @@ export interface ConsultaFilters {
  */
 export class ConsultasService extends BaseApiService {
   /**
+   * Convert ConsultaFilters to URL-safe parameters
+   */
+  private filtersToParams(
+    filters?: ConsultaFilters
+  ): Record<string, string | number | boolean> | undefined {
+    if (!filters) return undefined;
+
+    const params: Record<string, string | number | boolean> = {};
+
+    if (filters.status) params.status = filters.status;
+    if (filters.especialidade) params.especialidade = filters.especialidade;
+    if (filters.medicoId) params.medicoId = filters.medicoId;
+    if (filters.dataInicio) params.dataInicio = filters.dataInicio;
+    if (filters.dataFim) params.dataFim = filters.dataFim;
+    if (filters.page) params.page = filters.page;
+    if (filters.limit) params.limit = filters.limit;
+
+    return params;
+  }
+
+  /**
    * Get all consultas with optional filters
    */
-  async getConsultas(filters?: ConsultaFilters): Promise<PaginatedResponse<Consulta>> {
-    return this.get<Consulta[]>(API_ENDPOINTS.CONSULTAS.LIST, filters) as Promise<PaginatedResponse<Consulta>>;
+  async getConsultas(
+    filters?: ConsultaFilters
+  ): Promise<PaginatedResponse<Consulta>> {
+    return this.get<Consulta[]>(
+      API_ENDPOINTS.CONSULTAS.LIST,
+      this.filtersToParams(filters)
+    ) as Promise<PaginatedResponse<Consulta>>;
   }
 
   /**
@@ -64,14 +90,19 @@ export class ConsultasService extends BaseApiService {
   /**
    * Create new consulta
    */
-  async createConsulta(data: CreateConsultaRequest): Promise<ApiResponse<Consulta>> {
+  async createConsulta(
+    data: CreateConsultaRequest
+  ): Promise<ApiResponse<Consulta>> {
     return this.post<Consulta>(API_ENDPOINTS.CONSULTAS.CREATE, data);
   }
 
   /**
    * Update consulta
    */
-  async updateConsulta(id: string, data: UpdateConsultaRequest): Promise<ApiResponse<Consulta>> {
+  async updateConsulta(
+    id: string,
+    data: UpdateConsultaRequest
+  ): Promise<ApiResponse<Consulta>> {
     return this.put<Consulta>(API_ENDPOINTS.CONSULTAS.UPDATE(id), data);
   }
 
@@ -80,7 +111,7 @@ export class ConsultasService extends BaseApiService {
    */
   async cancelConsulta(id: string): Promise<ApiResponse<Consulta>> {
     return this.patch<Consulta>(API_ENDPOINTS.CONSULTAS.UPDATE(id), {
-      status: ConsultaStatus.CANCELADA
+      status: ConsultaStatus.CANCELADA,
     });
   }
 
@@ -94,7 +125,10 @@ export class ConsultasService extends BaseApiService {
   /**
    * Get available time slots for a doctor
    */
-  async getAvailableSlots(medicoId: string, date: string): Promise<ApiResponse<string[]>> {
+  async getAvailableSlots(
+    medicoId: string,
+    date: string
+  ): Promise<ApiResponse<string[]>> {
     return this.get<string[]>(`/consultas/available-slots`, { medicoId, date });
   }
 }
