@@ -325,7 +325,7 @@ export default function AgendarConsultaPage() {
                           value={especialidadeSelecionada}
                           onValueChange={setEspecialidadeSelecionada}
                         >
-                          <SelectTrigger id="especialidade">
+                          <SelectTrigger id="especialidade" className="w-full">
                             <SelectValue placeholder="Selecione uma especialidade" />
                           </SelectTrigger>
                           <SelectContent>
@@ -348,7 +348,7 @@ export default function AgendarConsultaPage() {
                           onValueChange={setMedicoSelecionado}
                           disabled={!especialidadeSelecionada}
                         >
-                          <SelectTrigger id="medico">
+                          <SelectTrigger id="medico" className="w-full">
                             <SelectValue
                               placeholder={
                                 especialidadeSelecionada
@@ -453,7 +453,7 @@ export default function AgendarConsultaPage() {
                           onValueChange={setHoraSelecionada}
                           disabled={!dataSelecionada}
                         >
-                          <SelectTrigger id="hora">
+                          <SelectTrigger id="hora" className="w-full">
                             <SelectValue
                               placeholder={
                                 dataSelecionada
@@ -556,7 +556,7 @@ export default function AgendarConsultaPage() {
                           value={tipoConsulta}
                           onValueChange={setTipoConsulta}
                         >
-                          <SelectTrigger id="tipo-consulta">
+                          <SelectTrigger id="tipo-consulta" className="w-full">
                             <SelectValue placeholder="Selecione o tipo de consulta" />
                           </SelectTrigger>
                           <SelectContent>
