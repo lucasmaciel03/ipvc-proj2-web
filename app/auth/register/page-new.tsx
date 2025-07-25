@@ -1,7 +1,7 @@
 "use client";
 
 import { Logo } from "@/components/ui/logo";
-import RegisterForm from "@/components/forms/RegisterFormWorking";
+import RegisterForm from "@/components/forms/RegisterForm";
 
 export default function RegisterPage() {
   return (
