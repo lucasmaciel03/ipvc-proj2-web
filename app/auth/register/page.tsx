@@ -19,12 +19,12 @@ export default function RegisterPage() {
             <div className="w-20 h-1 bg-white/30 mx-auto rounded-full"></div>
           </div>
           <p className="text-xl font-light leading-relaxed opacity-90">
-            Junte-se ao GoodDoctor e comece a gerenciar suas consultas médicas com simplicidade
+            Junte-se ao GoodDoctor e comece a gerir suas consultas médicas com simplicidade
           </p>
           <div className="mt-8 space-y-4 text-sm opacity-75">
             <div className="flex items-center justify-center space-x-2">
               <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span>Registro rápido e seguro</span>
+              <span>Registo rápido e seguro</span>
             </div>
             <div className="flex items-center justify-center space-x-2">
               <div className="w-2 h-2 bg-white rounded-full"></div>
