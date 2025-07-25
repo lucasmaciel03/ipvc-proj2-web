@@ -30,7 +30,7 @@ export default function EnviarExamesPage() {
                   Tipo de Exame
                 </label>
                 <Select>
-                  <SelectTrigger id="tipo-exame">
+                  <SelectTrigger id="tipo-exame" className="w-full">
                     <SelectValue placeholder="Selecione o tipo de exame" />
                   </SelectTrigger>
                   <SelectContent>
@@ -60,7 +60,7 @@ export default function EnviarExamesPage() {
                   Médico Solicitante
                 </label>
                 <Select>
-                  <SelectTrigger id="medico">
+                  <SelectTrigger id="medico" className="w-full">
                     <SelectValue placeholder="Selecione o médico" />
                   </SelectTrigger>
                   <SelectContent>
