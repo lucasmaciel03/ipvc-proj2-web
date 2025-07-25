@@ -1,7 +1,7 @@
 "use client";
 
 import { Logo } from "@/components/ui/logo";
-import RegisterForm from "@/components/forms/RegisterFormWorking";
+import MultiStepRegisterForm from "@/components/forms/MultiStepRegisterForm";
 
 export default function RegisterPage() {
   return (
@@ -40,7 +40,7 @@ export default function RegisterPage() {
 
       {/* Right side - Register Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-3xl">
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
             <Logo
@@ -53,7 +53,7 @@ export default function RegisterPage() {
           </div>
           
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-            <RegisterForm />
+            <MultiStepRegisterForm />
           </div>
         </div>
       </div>
