@@ -21,8 +21,8 @@ export const medicosMock: Medico[] = [
   {
     id: "1",
     nome: "Dr. Carlos Silva",
-    foto: "https://randomuser.me/api/portraits/men/1.jpg",
-    especialidade: "Cardiologia",
+    foto: "/assets/images/doctors/dr-carlos-silva.jpg",
+    especialidade: "cardiologia",
     pontuacao: 4.8,
     hospital: "Hospital Santa Maria",
     endereco: "Rua das Flores, 123 - Porto",
@@ -37,8 +37,8 @@ export const medicosMock: Medico[] = [
   {
     id: "2",
     nome: "Dra. Ana Santos",
-    foto: "https://randomuser.me/api/portraits/women/1.jpg",
-    especialidade: "Dermatologia",
+    foto: "/assets/images/doctors/dra-ana-santos.jpg",
+    especialidade: "dermatologia",
     pontuacao: 4.9,
     hospital: "Clínica da Luz",
     endereco: "Av. República, 45 - Lisboa",
@@ -53,8 +53,8 @@ export const medicosMock: Medico[] = [
   {
     id: "3",
     nome: "Dr. Miguel Costa",
-    foto: "https://randomuser.me/api/portraits/men/2.jpg",
-    especialidade: "Neurologia",
+    foto: "/assets/images/doctors/dr-miguel-costa.jpg",
+    especialidade: "neurologia",
     pontuacao: 4.7,
     hospital: "Hospital São João",
     endereco: "Rua Central, 78 - Porto",
@@ -68,8 +68,8 @@ export const medicosMock: Medico[] = [
   {
     id: "4",
     nome: "Dra. Sofia Martins",
-    foto: "https://randomuser.me/api/portraits/women/2.jpg",
-    especialidade: "Pediatria",
+    foto: "/assets/images/doctors/dra-sofia-martins.jpg",
+    especialidade: "pediatria",
     pontuacao: 5.0,
     hospital: "Hospital Pediátrico",
     endereco: "Rua dos Girassóis, 32 - Braga",
@@ -84,8 +84,8 @@ export const medicosMock: Medico[] = [
   {
     id: "5",
     nome: "Dr. João Oliveira",
-    foto: "https://randomuser.me/api/portraits/men/3.jpg",
-    especialidade: "Ortopedia",
+    foto: "/assets/images/doctors/dr-joao-oliveira.jpg",
+    especialidade: "ortopedia",
     pontuacao: 4.6,
     hospital: "Hospital de Santo António",
     endereco: "Av. Central, 567 - Porto",
@@ -96,6 +96,37 @@ export const medicosMock: Medico[] = [
     ],
     experiencia: "17 anos",
     formacao: "Faculdade de Medicina da Universidade Nova de Lisboa"
+  },
+  {
+    id: "6",
+    nome: "Dra. Isabel Ferreira",
+    foto: "/assets/images/doctors/dra-isabel-ferreira.jpg",
+    especialidade: "clinica-geral",
+    pontuacao: 4.8,
+    hospital: "Centro de Saúde Central",
+    endereco: "Rua da Paz, 98 - Aveiro",
+    telefone: "+351 925 147 258",
+    horarios: [
+      { diasSemana: "Segunda à Sexta", horas: "09:00 - 18:00" }
+    ],
+    experiencia: "10 anos",
+    formacao: "Faculdade de Medicina da Universidade de Aveiro"
+  },
+  {
+    id: "7",
+    nome: "Dr. Pedro Almeida",
+    foto: "/assets/images/doctors/dr-pedro-almeida.jpg",
+    especialidade: "psiquiatria",
+    pontuacao: 4.9,
+    hospital: "Centro de Saúde Mental",
+    endereco: "Av. dos Psicólogos, 44 - Coimbra",
+    telefone: "+351 917 369 852",
+    horarios: [
+      { diasSemana: "Segunda, Quarta e Sexta", horas: "14:00 - 20:00" },
+      { diasSemana: "Terça e Quinta", horas: "10:00 - 16:00" }
+    ],
+    experiencia: "13 anos",
+    formacao: "Faculdade de Medicina da Universidade de Coimbra"
   }
 ];
 

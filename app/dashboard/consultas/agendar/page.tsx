@@ -27,6 +27,7 @@ import { Label } from "@/components/ui/label";
 import { formatarData } from "@/mocks/consultas";
 import { medicosMock } from "@/mocks/medicos";
 import Image from "next/image";
+import { AvatarFallback } from "@/components/ui/avatar-fallback";
 
 // Especialidades médicas disponíveis
 const especialidades = [
@@ -372,28 +373,13 @@ export default function AgendarConsultaPage() {
                   {medicoSelecionado && (
                     <div className="bg-muted/50 rounded-lg p-4">
                       <div className="flex items-start gap-3">
-                        {medicosMock.find((m) => m.id === medicoSelecionado)
-                          ?.foto ? (
-                          <Image
-                            src={
-                              medicosMock.find(
-                                (m) => m.id === medicoSelecionado
-                              )?.foto || ""
-                            }
-                            alt={
-                              medicosMock.find(
-                                (m) => m.id === medicoSelecionado
-                              )?.nome || ""
-                            }
-                            width={40}
-                            height={40}
-                            className="h-10 w-10 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                            <User className="h-5 w-5 text-primary" />
-                          </div>
-                        )}
+                        <AvatarFallback
+                          src={medicosMock.find((m) => m.id === medicoSelecionado)?.foto}
+                          alt={medicosMock.find((m) => m.id === medicoSelecionado)?.nome || ""}
+                          width={40}
+                          height={40}
+                          fallbackText={medicosMock.find((m) => m.id === medicoSelecionado)?.nome}
+                        />
                         <div>
                           <h4 className="font-medium">
                             {
@@ -495,28 +481,13 @@ export default function AgendarConsultaPage() {
 
                         <div className="border-t border-border pt-4 mt-2">
                           <div className="flex items-start gap-3">
-                            {medicosMock.find((m) => m.id === medicoSelecionado)
-                              ?.foto ? (
-                              <Image
-                                src={
-                                  medicosMock.find(
-                                    (m) => m.id === medicoSelecionado
-                                  )?.foto || ""
-                                }
-                                alt={
-                                  medicosMock.find(
-                                    (m) => m.id === medicoSelecionado
-                                  )?.nome || ""
-                                }
-                                width={40}
-                                height={40}
-                                className="h-10 w-10 rounded-full object-cover"
-                              />
-                            ) : (
-                              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                <User className="h-5 w-5 text-primary" />
-                              </div>
-                            )}
+                            <AvatarFallback
+                              src={medicosMock.find((m) => m.id === medicoSelecionado)?.foto}
+                              alt={medicosMock.find((m) => m.id === medicoSelecionado)?.nome || ""}
+                              width={40}
+                              height={40}
+                              fallbackText={medicosMock.find((m) => m.id === medicoSelecionado)?.nome}
+                            />
                             <div>
                               <h4 className="font-medium">
                                 {

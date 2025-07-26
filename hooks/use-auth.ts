@@ -55,7 +55,7 @@ let globalAuthState: AuthState = {
 };
 
 /**
- * Secure storage utilities with error handling
+ * Secure storage utilities with error handling and cookie support
  * Follows Single Responsibility Principle
  */
 class AuthStorage {
@@ -107,12 +107,37 @@ class AuthStorage {
     try {
       if (token) {
         localStorage.setItem(this.getStorageKey('AUTH_TOKEN'), token);
+        // Also save to cookie for middleware
+        this.setCookie('auth-token', token, 7); // 7 days
       } else {
         localStorage.removeItem(this.getStorageKey('AUTH_TOKEN'));
+        this.deleteCookie('auth-token');
       }
     } catch (error) {
       console.error('Failed to save token to storage:', error);
       throw new Error(AuthError.STORAGE_ERROR);
+    }
+  }
+
+  static setCookie(name: string, value: string, days: number): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+    } catch (error) {
+      console.error('Failed to set cookie:', error);
+    }
+  }
+
+  static deleteCookie(name: string): void {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+    } catch (error) {
+      console.error('Failed to delete cookie:', error);
     }
   }
 
@@ -122,6 +147,7 @@ class AuthStorage {
     try {
       localStorage.removeItem(this.getStorageKey('USER_DATA'));
       localStorage.removeItem(this.getStorageKey('AUTH_TOKEN'));
+      this.deleteCookie('auth-token');
     } catch (error) {
       console.error('Failed to clear storage:', error);
     }
